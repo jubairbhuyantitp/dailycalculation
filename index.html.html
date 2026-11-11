@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My Finance Pro — Personal Accounting</title>
+<style>
+:root{--navy:#142b4a;--blue:#2864d7;--bg:#f3f6fb;--ink:#18263b;--muted:#718096;--line:#e5ebf3;--green:#138765;--red:#d94d5c;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:14px Inter,Segoe UI,Arial,sans-serif;color:var(--ink)}
+.app{max-width:1320px;margin:auto;padding:24px 18px 45px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}.brand{display:flex;gap:12px;align-items:center}.logo{height:46px;width:46px;border-radius:14px;background:linear-gradient(135deg,#2461d2,#7aa2ff);display:grid;place-items:center;color:#fff;font-size:24px;font-weight:800}.brand h1{font-size:21px;margin:0}.muted{color:var(--muted)}.sub{font-size:12px;color:var(--muted);margin-top:4px}.tag{background:#e7efff;color:#2459b7;padding:8px 12px;border-radius:20px;font-size:11px;font-weight:700}
+.hero{background:linear-gradient(115deg,#142b4a,#28548d);border-radius:20px;padding:25px 28px;color:white;display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 30px #142b4a1c}.hero small{color:#c6d7ee;letter-spacing:.8px}.big{font-size:34px;font-weight:800;margin:7px 0 15px}.heroStats{display:flex;gap:24px;flex-wrap:wrap;color:#dce8f8;font-size:12px}.heroStats b{color:white;margin-left:5px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin:17px 0}.stat,.panel,.account{background:#fff;border:1px solid var(--line);border-radius:15px;box-shadow:0 4px 16px #1a34520a}.stat{padding:16px}.stathead{display:flex;justify-content:space-between;color:var(--muted);font-size:12px}.bubble{height:31px;width:31px;border-radius:10px;display:grid;place-items:center;background:#edf2ff;color:var(--blue)}.stat strong{font-size:21px;display:block;margin:10px 0 4px}.stat small{color:var(--muted);font-size:11px}
+.nav{display:flex;gap:7px;overflow:auto;padding:5px 0 14px}.nav button{border:1px solid var(--line);background:#fff;color:#5c6c82;border-radius:10px;padding:10px 14px;white-space:nowrap;cursor:pointer;font-weight:650}.nav button.active{background:var(--navy);border-color:var(--navy);color:white}
+.page{display:none}.page.active{display:block}.grid2{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}.panel{padding:19px}.panel h2{font-size:16px;margin:0 0 15px}.panel h3{font-size:14px;margin:0 0 12px}
+label{display:block;font-size:11px;font-weight:700;color:#637187;margin:12px 0 6px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #dce4ee;border-radius:9px;background:#fff;color:var(--ink);font:13px inherit;outline:none}input:focus,select:focus,textarea:focus{border-color:#7195e5;box-shadow:0 0 0 3px #2864d719}
+button{font-family:inherit}.btn{border:0;border-radius:9px;padding:10px 13px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer}.btn.secondary{background:#edf2fa;color:#36506f}.btn.danger{background:#fff0f0;color:#c33c4a}.btn.full{width:100%;margin-top:15px}.btnrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.switch{display:flex;gap:5px;background:#f0f3f8;border-radius:10px;padding:4px}.switch button{flex:1;border:0;border-radius:7px;padding:9px;background:transparent;color:#637187;font-weight:700;cursor:pointer}.switch button.active{background:#fff;color:var(--blue);box-shadow:0 2px 6px #0000000d}
+.accountGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.account{padding:15px}.accountTop{display:flex;justify-content:space-between;gap:8px;align-items:center}.accountName{font-weight:750}.accountType{font-size:10px;color:var(--muted);margin-top:3px}.accountBalance{font-size:20px;font-weight:800;margin:14px 0 4px}.accountMeta{font-size:11px;color:var(--muted)}.account input{margin-top:9px}
+.toolbar{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}.toolbar label{margin-top:0}.tablewrap{overflow:auto;border:1px solid var(--line);border-radius:11px}table{width:100%;border-collapse:collapse;min-width:650px;background:white}th{background:#f4f7fb;color:#617087;text-align:left;font-size:11px;padding:11px 12px}td{padding:11px 12px;border-top:1px solid #edf0f5;font-size:12px}td strong{font-size:12px}.plus{color:var(--green);font-weight:750}.minus{color:var(--red);font-weight:750}.pill{display:inline-block;border-radius:20px;padding:4px 8px;background:#edf2fa;color:#52657e;font-size:10px;font-weight:700}.empty{text-align:center;color:#8794a7;padding:30px 10px;font-size:12px}.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.personCard{padding:13px;border:1px solid var(--line);border-radius:11px;margin-bottom:9px}.personHead{display:flex;justify-content:space-between;gap:10px}.personName{font-weight:750}.personMeta{font-size:11px;color:var(--muted);margin-top:4px}.personDue{font-size:17px;font-weight:800;margin-top:8px}.note{font-size:11px;color:#74839a;line-height:1.5;margin-top:12px}.sectionTitle{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.sectionTitle h2{margin:0}.printOnly{display:none}
+@media(max-width:900px){.grid2{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.accountGrid{grid-template-columns:repeat(2,1fr)}.toolbar{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){
+.app{padding:13px 10px 30px}.top{align-items:flex-start;margin-bottom:14px}.brand h1{font-size:18px}.logo{width:41px;height:41px}.tag{font-size:9px;padding:7px 9px}
+.hero{padding:18px;border-radius:16px}.big{font-size:27px}.heroStats{gap:9px 15px;font-size:11px}.cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin:12px 0}.stat{padding:12px;border-radius:13px}.stat strong{font-size:17px;overflow-wrap:anywhere}.stathead{font-size:11px}
+.nav{gap:6px;padding-bottom:11px}.nav button{padding:9px 11px;font-size:11px}.panel{padding:14px;border-radius:14px}.grid2{gap:11px}.accountGrid,.split{grid-template-columns:1fr}.toolbar{grid-template-columns:1fr 1fr}.sectionTitle{align-items:flex-start;flex-wrap:wrap}.sectionTitle h2{font-size:15px}
+input,select,textarea{font-size:16px;padding:12px}.btn{padding:11px 12px}.tablewrap{border-radius:9px}.tablewrap table{min-width:590px}.personCard{padding:12px}
+}
+.modal[hidden]{display:none}.modal{position:fixed;inset:0;background:#0c1d33a8;z-index:1000;display:flex;align-items:center;justify-content:center;padding:15px}.modalBox{background:#fff;border-radius:17px;padding:20px;width:min(100%,420px);max-height:90vh;overflow:auto;box-shadow:0 25px 70px #0003}
+@media print{.modal{display:none!important}body{background:#fff}.app{max-width:none;padding:0}.top,.hero,.cards,.nav,.noPrint,.footer{display:none!important}.page{display:none!important}.page.printing{display:block!important}.panel,.account{box-shadow:none;border:0;padding:0}.tablewrap{overflow:visible;border:0}table{min-width:0}th,td{padding:7px;font-size:10px}.printOnly{display:block}.printTitle{font-size:19px;margin-bottom:4px}.printSub{font-size:10px;color:#555;margin-bottom:14px}.toolbar{display:none}.accountGrid{grid-template-columns:repeat(3,1fr)}}
+</style>
+</head>
+<body><div class="app">
+<header class="top"><div class="brand"><div class="logo">৳</div><div><h1>My Finance Pro</h1><div class="sub">Personal Accounting & Money Manager</div></div></div><div class="tag">LOCAL DEMO · BDT</div></header>
+<section class="hero"><div><small>NET AVAILABLE BALANCE · ASSETS LESS CREDIT CARD DUE</small><div class="big" id="netBalance">৳0.00</div><div class="heroStats"><span>Income <b id="heroIncome">৳0</b></span><span>Expense <b id="heroExpense">৳0</b></span><span>Receivable <b id="heroRec">৳0</b></span><span>Payable <b id="heroPay">৳0</b></span></div></div><div style="font-size:58px;opacity:.2">▤</div></section>
+<section class="cards">
+ <div class="stat"><div class="stathead">Total Income <span class="bubble">↗</span></div><strong class="plus" id="incomeTotal">৳0</strong><small>Recorded money received</small></div>
+ <div class="stat"><div class="stathead">Total Expense <span class="bubble">↘</span></div><strong class="minus" id="expenseTotal">৳0</strong><small>Recorded money spent</small></div>
+ <div class="stat"><div class="stathead">You Will Receive <span class="bubble">↓</span></div><strong id="recTotal">৳0</strong><small>Outstanding receivables</small></div>
+ <div class="stat"><div class="stathead">You Have to Pay <span class="bubble">↑</span></div><strong id="payTotal">৳0</strong><small>Outstanding payables</small></div>
+</section>
+<nav class="nav noPrint">
+<button class="active" data-page="dashboard">Dashboard</button><button data-page="transactions">Transactions & Reports</button><button data-page="accounts">Bank & Accounts</button><button data-page="people">Receivable / Payable</button>
+</nav>
+
+<section id="dashboard" class="page active">
+ <div class="sectionTitle"><h2>Account overview</h2><span class="muted" style="font-size:11px">Opening balance starts at ৳0</span></div>
+ <div id="dashAccounts" class="accountGrid"></div>
+ <div class="panel" style="margin-top:16px"><div class="sectionTitle"><h2>Recent transactions</h2><button class="btn secondary noPrint" onclick="go('transactions')">View all</button></div><div id="recent"></div></div>
+</section>
+
+<section id="transactions" class="page">
+ <div class="grid2">
+  <div class="panel noPrint">
+   <h2>Add transaction</h2><div class="switch"><button id="expTab" class="active" type="button">− Expense</button><button id="incTab" type="button">＋ Income</button></div>
+   <form id="txForm">
+    <label>Amount (BDT)</label><input id="txAmount" type="number" min=".01" step=".01" placeholder="Enter amount" required>
+    <label>Account / Payment method</label><select id="txAccount"></select>
+    <label>Category</label><select id="txCategory"></select>
+    <label>Date</label><input id="txDate" type="date" required>
+    <label>Received from / Paid to (optional)</label><input id="txParty" placeholder="Person or company">
+    <label>Description</label><input id="txNote" placeholder="Transaction details">
+    <button class="btn full" type="submit">Save transaction</button>
+   </form>
+   <div class="note">For Credit Card expenses, the card due increases. Use the Transfer section on the Accounts page to record a card bill payment.</div>
+  </div>
+  <div class="panel">
+   <div class="sectionTitle"><h2>Transaction report</h2><button class="btn noPrint" onclick="printCurrent('transactions')">Print report</button></div>
+   <div class="printOnly"><div class="printTitle">My Finance — Transaction Report</div><div class="printSub" id="printTxSub"></div></div>
+   <div class="toolbar noPrint">
+    <div><label>From date</label><input id="fromDate" type="date"></div><div><label>To date</label><input id="toDate" type="date"></div>
+    <div><label>Account</label><select id="filterAccount"></select></div><div><label>Type</label><select id="filterType"><option>All</option><option>Income</option><option>Expense</option><option>Transfer</option></select></div>
+   </div>
+   <div class="btnrow noPrint" style="margin:0 0 12px"><button class="btn secondary" onclick="clearFilters()">Clear filters</button></div>
+   <div id="txSummary" class="muted" style="font-size:11px;margin-bottom:10px"></div><div class="tablewrap"><table><thead><tr><th>Date</th><th>Type</th><th>Details</th><th>Account</th><th>Amount (BDT)</th><th class="noPrint">Action</th></tr></thead><tbody id="txRows"></tbody></table></div>
+  </div>
+ </div>
+</section>
+
+<section id="accounts" class="page">
+ <div class="sectionTitle"><h2>Bank & account management</h2><button class="btn noPrint" onclick="printCurrent('accounts')">Print account statement</button></div>
+ <div class="panel">
+  <div class="printOnly"><div class="printTitle">My Finance — Account Balances</div><div class="printSub">Account-wise balances and opening balances</div></div>
+  <div id="accountCards" class="accountGrid"></div>
+  <div class="note">Opening balance for every account is fixed at ৳0 in this version. Credit Card balance is shown as outstanding due: card purchases increase due and card bill payments reduce due.</div>
+ </div>
+ <div class="grid2" style="margin-top:15px">
+  <div class="panel noPrint"><h2>Transfer between accounts</h2>
+   <form id="transferForm"><label>From account</label><select id="fromAccount"></select><label>To account</label><select id="toAccount"></select><label>Amount (BDT)</label><input id="transferAmount" type="number" min=".01" step=".01" required><label>Date</label><input id="transferDate" type="date" required><label>Note</label><input id="transferNote" placeholder="e.g. BRAC to bKash / Credit card bill"><button class="btn full">Save transfer</button></form>
+   <div class="note">A transfer is not counted as income or expense. Moving money to a Credit Card account records a card bill payment and reduces its due.</div>
+  </div>
+  <div class="panel noPrint"><h2>Add another account</h2><form id="accountForm"><label>Account name</label><input id="newAccountName" placeholder="e.g. City Bank" required><label>Account type</label><select id="newAccountType"><option value="asset">Bank / Cash / Mobile wallet</option><option value="credit">Credit Card</option></select><div class="note">New accounts will start with an opening balance of ৳0.</div><button class="btn full">Add account</button></form></div>
+ </div>
+</section>
+
+<section id="people" class="page">
+ <div class="sectionTitle"><h2>Receivable & payable ledger</h2><button class="btn noPrint" onclick="printCurrent('people')">Print ledger</button></div>
+ <div class="split">
+  <div class="panel">
+   <h2>People who owe you · Receivable</h2><div class="note" style="margin:0 0 10px">When you add a receivable, the amount will automatically be recorded as an Expense from the account you select below.</div>
+   <form id="recForm" class="noPrint"><label>Name</label><input id="recName" required placeholder="Person / company name"><label>Phone (optional)</label><input id="recPhone" placeholder="Mobile number"><label>Amount you are giving (BDT)</label><input id="recAmount" type="number" min=".01" step=".01" required><label>Which account are you giving from?</label><select id="recAccount"></select><label>Date</label><input id="recDate" type="date" required><label>Note</label><input id="recNote" placeholder="Reason / details"><button class="btn full">＋ Add receivable</button></form>
+   <div class="printOnly"><div class="printTitle">Receivables — Money people owe me</div></div><div id="receivables" style="margin-top:14px"></div>
+  </div>
+  <div class="panel">
+   <h2>People you owe · Payable</h2>
+   <form id="payForm" class="noPrint"><label>Name</label><input id="payName" required placeholder="Person / company name"><label>Phone (optional)</label><input id="payPhone" placeholder="Mobile number"><label>Total amount you have to pay (BDT)</label><input id="payAmount" type="number" min=".01" step=".01" required><label>Date</label><input id="payDate" type="date" required><label>Note</label><input id="payNote" placeholder="Reason / details"><button class="btn full">＋ Add payable</button></form>
+   <div class="printOnly"><div class="printTitle">Payables — Money I owe others</div></div><div id="payables" style="margin-top:14px"></div>
+  </div>
+ </div>
+ <div class="note">Use “Receive payment” when someone pays you. It reduces their outstanding balance and adds the money to the selected account as income. Use “Pay now” to reduce what you owe and record the outgoing expense.</div>
+</section>
+<div id="settleModal" class="modal noPrint" hidden>
+ <div class="modalBox">
+  <div class="sectionTitle"><h2 id="settleTitle">Record payment</h2><button type="button" class="btn secondary" id="closeSettle">✕</button></div>
+  <div id="settlePersonInfo" class="note"></div>
+  <form id="settleForm">
+   <label id="settleAmountLabel">Amount</label><input id="settleAmount" type="number" min=".01" step=".01" required>
+   <label id="settleAccountLabel">Payment account / method</label><select id="settleAccount" required></select>
+   <label>Payment date</label><input id="settleDate" type="date" required>
+   <label>Note (optional)</label><input id="settleNote" placeholder="Payment details">
+   <button class="btn full" type="submit" id="settleSubmit">Save payment</button>
+  </form>
+ </div>
+</div>
+<div class="footer muted" style="text-align:center;font-size:10px;margin-top:20px">MY FINANCE PRO · DEMO BUILD · Data is stored in this browser only until cloud connection is configured.</div>
+</div>
+<script>
+const STORE='myFinanceProDemo_v2';
+const defaultAccounts=[
+ {id:'cash',name:'Cash',type:'asset',opening:0},
+ {id:'brac',name:'BRAC Bank',type:'asset',opening:0},
+ {id:'alarafa',name:'Al-Arafah Islami Bank',type:'asset',opening:0},
+ {id:'bkash',name:'bKash',type:'asset',opening:0},
+ {id:'credit',name:'Credit Card',type:'credit',opening:0}
+];
+let data={accounts:defaultAccounts,transactions:[],people:[]};
+try{const saved=JSON.parse(localStorage.getItem(STORE)||'null');if(saved&&Array.isArray(saved.accounts)&&Array.isArray(saved.transactions)&&Array.isArray(saved.people))data=saved;}catch(e){}
+let txKind='Expense';
+const $=id=>document.getElementById(id), fmt=n=>'৳'+Number(n||0).toLocaleString('en-BD',{minimumFractionDigits:2,maximumFractionDigits:2});
+// Use Bangladesh local calendar date; avoids UTC date shifting near midnight.
+const today=()=>{const parts=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Dhaka',year:'numeric',month:'2-digit',day:'2-digit'}).formatToParts(new Date());const v=Object.fromEntries(parts.map(x=>[x.type,x.value]));return `${v.year}-${v.month}-${v.day}`;};
+function persist(){localStorage.setItem(STORE,JSON.stringify(data));renderAll();}
+function acc(id){return data.accounts.find(a=>a.id===id)}
+function accountName(id){return acc(id)?.name||'Unknown account'}
+function accountBalance(a){
+ let b=Number(a.opening||0);
+ data.transactions.forEach(t=>{
+  if(t.type==='Income'&&t.account===a.id){if(a.type==='credit')b-=t.amount;else b+=t.amount;}
+  if(t.type==='Expense'&&t.account===a.id){if(a.type==='credit')b+=t.amount;else b-=t.amount;}
+  if(t.type==='Transfer'){
+   if(t.from===a.id){if(a.type==='credit')b+=t.amount;else b-=t.amount;}
+   if(t.to===a.id){if(a.type==='credit')b-=t.amount;else b+=t.amount;}
+  }
+ });return b;
+}
+function totals(){let income=0,expense=0;data.transactions.forEach(t=>{if(t.type==='Income')income+=t.amount;if(t.type==='Expense')expense+=t.amount;});let rec=data.people.filter(p=>p.kind==='Receivable').reduce((s,p)=>s+p.due,0),pay=data.people.filter(p=>p.kind==='Payable').reduce((s,p)=>s+p.due,0);let assets=data.accounts.filter(a=>a.type!=='credit').reduce((s,a)=>s+accountBalance(a),0),credit=data.accounts.filter(a=>a.type==='credit').reduce((s,a)=>s+accountBalance(a),0);return{income,expense,rec,pay,net:assets-credit};}
+function fillSelect(id,includeAll=false){const el=$(id);if(!el)return;let old=el.value;el.innerHTML=(includeAll?'<option value="All">All accounts</option>':'')+data.accounts.map(a=>`<option value="${esc(a.id)}">${esc(a.name)}</option>`).join('');if([...el.options].some(o=>o.value===old))el.value=old;}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderAccountCards(target){$(target).innerHTML=data.accounts.map(a=>{let b=accountBalance(a);return `<div class="account"><div class="accountTop"><div><div class="accountName">${esc(a.name)}</div><div class="accountType">${a.type==='credit'?'CREDIT CARD · OUTSTANDING DUE':'BANK / CASH / WALLET'}</div></div><span class="pill">${a.type==='credit'?'Credit':'Asset'}</span></div><div class="accountBalance ${a.type==='credit'?'minus':b<0?'minus':'plus'}">${fmt(Math.abs(b))}${a.type==='credit'?' due':''}</div><div class="accountMeta">Opening balance: ${fmt(a.opening||0)}</div></div>`}).join('');}
+function renderAll(){
+ const t=totals();$('netBalance').textContent=fmt(t.net);$('heroIncome').textContent=fmt(t.income);$('heroExpense').textContent=fmt(t.expense);$('heroRec').textContent=fmt(t.rec);$('heroPay').textContent=fmt(t.pay);$('incomeTotal').textContent=fmt(t.income);$('expenseTotal').textContent=fmt(t.expense);$('recTotal').textContent=fmt(t.rec);$('payTotal').textContent=fmt(t.pay);
+ renderAccountCards('dashAccounts');renderAccountCards('accountCards');
+ ['txAccount','fromAccount','toAccount','recAccount','settleAccount'].forEach(id=>fillSelect(id));fillSelect('filterAccount',true);
+ renderTransactions();renderRecent();renderPeople();
+}
+function txRow(t,action=true){let detail=t.note||t.category||t.type,account=t.type==='Transfer'?`${accountName(t.from)} → ${accountName(t.to)}`:accountName(t.account);let amount=t.type==='Income'?`<span class="plus">+${fmt(t.amount)}</span>`:t.type==='Expense'?`<span class="minus">−${fmt(t.amount)}</span>`:`${fmt(t.amount)}`;return `<tr><td>${esc(t.date)}</td><td><span class="pill">${esc(t.type)}</span></td><td><strong>${esc(detail)}</strong>${t.party?`<div class="muted">${esc(t.party)}</div>`:''}</td><td>${esc(account)}</td><td>${amount}</td><td class="noPrint">${action?`<button class="btn danger" data-del-tx="${esc(t.id)}">Delete</button>`:''}</td></tr>`;}
+function filteredTx(){let from=$('fromDate').value,to=$('toDate').value,account=$('filterAccount').value,type=$('filterType').value;return data.transactions.filter(t=>(!from||t.date>=from)&&(!to||t.date<=to)&&(type==='All'||t.type===type)&&(account==='All'||(t.type==='Transfer'?(t.from===account||t.to===account):t.account===account))).sort((a,b)=>b.date.localeCompare(a.date)||b.created-a.created);}
+function renderTransactions(){let rows=filteredTx();$('txRows').innerHTML=rows.map(t=>txRow(t)).join('')||'<tr><td colspan="6" class="empty">No transactions match these filters.</td></tr>';let inc=rows.filter(t=>t.type==='Income').reduce((s,t)=>s+t.amount,0),exp=rows.filter(t=>t.type==='Expense').reduce((s,t)=>s+t.amount,0);$('txSummary').textContent=`${rows.length} records · Income ${fmt(inc)} · Expense ${fmt(exp)} · Net ${fmt(inc-exp)}`;$('printTxSub').textContent=$('txSummary').textContent;}
+function renderRecent(){let rows=data.transactions.slice().sort((a,b)=>b.created-a.created).slice(0,6);$('recent').innerHTML=rows.length?`<div class="tablewrap"><table><thead><tr><th>Date</th><th>Type</th><th>Description</th><th>Account</th><th>Amount</th></tr></thead><tbody>${rows.map(t=>txRow(t,false)).join('')}</tbody></table></div>`:'<div class="empty">No transactions recorded yet.</div>';}
+function setTxKind(k){txKind=k;$('expTab').classList.toggle('active',k==='Expense');$('incTab').classList.toggle('active',k==='Income');let cats=k==='Income'?['Salary','Business income','Commission','Freelance','Refund','Other']:['Food','Transport','Shopping','Rent','Bills','Health','Education','Travel','Credit card purchase','Other'];$('txCategory').innerHTML=cats.map(c=>`<option>${c}</option>`).join('');}
+function renderPeople(){for(let kind of ['Receivable','Payable']){let list=data.people.filter(p=>p.kind===kind&&p.due>0);let target=kind==='Receivable'?'receivables':'payables';$(target).innerHTML=list.length?list.map(p=>`<div class="personCard"><div class="personHead"><div><div class="personName">${esc(p.name)}</div><div class="personMeta">${esc(p.phone||'No phone')} · Added ${esc(p.date)}${p.note?' · '+esc(p.note):''}</div></div><span class="pill">${kind==='Receivable'?'Will receive':'Need to pay'}</span></div><div class="personDue ${kind==='Receivable'?'plus':'minus'}">${fmt(p.due)} <span class="muted" style="font-size:10px">remaining</span></div><div class="btnrow noPrint"><button class="btn" data-settle="${esc(p.id)}">${kind==='Receivable'?'Receive payment':'Pay now'}</button><button class="btn secondary" data-person-delete="${esc(p.id)}">Delete</button></div></div>`).join(''):'<div class="empty">No outstanding balances.</div>';}}
+function go(id){document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active',p.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));}
+document.querySelectorAll('.nav button').forEach(b=>b.addEventListener('click',()=>go(b.dataset.page)));
+$('expTab').onclick=()=>setTxKind('Expense');$('incTab').onclick=()=>setTxKind('Income');
+$('txForm').addEventListener('submit',e=>{e.preventDefault();let amount=Number($('txAmount').value);if(!(amount>0))return;data.transactions.push({id:crypto.randomUUID(),type:txKind,amount,account:$('txAccount').value,category:$('txCategory').value,date:$('txDate').value,party:$('txParty').value.trim(),note:$('txNote').value.trim(),created:Date.now()});e.target.reset();$('txDate').value=today();setTxKind(txKind);persist();});
+['fromDate','toDate','filterAccount','filterType'].forEach(id=>$(id).addEventListener('change',renderTransactions));
+function clearFilters(){$('fromDate').value='';$('toDate').value='';$('filterAccount').value='All';$('filterType').value='All';renderTransactions();}
+$('txRows').addEventListener('click',e=>{
+ let b=e.target.closest('[data-del-tx]');if(!b)return;
+ const tx=data.transactions.find(t=>t.id===b.dataset.delTx);if(!tx)return;
+ const linked=tx.personId?data.people.find(p=>p.id===tx.personId):null;
+ const message=tx.linkRole==='origin'
+  ?'This is the original money-given transaction. Deleting it will also delete this receivable record and all its collection transactions. Continue?'
+  :tx.linkRole==='settlement'
+   ?'Delete this linked payment? The outstanding balance will be restored automatically.'
+   :'Delete this transaction?';
+ if(!confirm(message))return;
+ if(tx.linkRole==='origin'&&linked){
+  data.people=data.people.filter(p=>p.id!==linked.id);
+  data.transactions=data.transactions.filter(t=>t.personId!==linked.id);
+ }else{
+  if(tx.linkRole==='settlement'&&linked){
+   linked.due=Math.round((Number(linked.due||0)+Number(tx.amount||0))*100)/100;
+  }
+  data.transactions=data.transactions.filter(t=>t.id!==tx.id);
+ }
+ persist();
+});
+$('transferForm').addEventListener('submit',e=>{e.preventDefault();let amount=Number($('transferAmount').value),from=$('fromAccount').value,to=$('toAccount').value;if(!(amount>0)||from===to){alert('Choose two different accounts and enter a valid amount.');return;}data.transactions.push({id:crypto.randomUUID(),type:'Transfer',amount,from,to,date:$('transferDate').value,note:$('transferNote').value.trim(),created:Date.now()});e.target.reset();$('transferDate').value=today();persist();});
+$('accountForm').addEventListener('submit',e=>{e.preventDefault();let name=$('newAccountName').value.trim();if(!name)return;data.accounts.push({id:crypto.randomUUID(),name,type:$('newAccountType').value,opening:0});e.target.reset();persist();});
+function addPerson(kind){
+ let prefix=kind==='Receivable'?'rec':'pay',name=$(prefix+'Name').value.trim(),amount=Number($(prefix+'Amount').value);
+ if(!name||!(amount>0))return;
+ let person={id:crypto.randomUUID(),kind,name,phone:$(prefix+'Phone').value.trim(),due:amount,original:amount,date:$(prefix+'Date').value,note:$(prefix+'Note').value.trim()};
+ data.people.push(person);
+ if(kind==='Receivable'){
+  const accountId=$('recAccount').value;
+  data.transactions.push({id:crypto.randomUUID(),type:'Expense',amount,account:accountId,category:'Money lent / Receivable',date:person.date,party:name,personId:person.id,linkRole:'origin',note:'Money given to '+name+(person.note?' — '+person.note:''),created:Date.now()});
+ }
+ $(prefix+'Form').reset();$(prefix+'Date').value=today();persist();
+}
+$('recForm').addEventListener('submit',e=>{e.preventDefault();addPerson('Receivable')});$('payForm').addEventListener('submit',e=>{e.preventDefault();addPerson('Payable')});
+let activeSettlementId=null;
+function openSettlement(person){
+ activeSettlementId=person.id;
+ const isRec=person.kind==='Receivable';
+ $('settleTitle').textContent=isRec?'Receive money from '+person.name:'Pay money to '+person.name;
+ $('settlePersonInfo').textContent='Outstanding balance: '+fmt(person.due);
+ $('settleAmountLabel').textContent='Amount '+(isRec?'received':'paid')+' (BDT)';
+ $('settleAccountLabel').textContent=isRec?'Which account did you receive the money into?':'Which account did you pay from?';
+ $('settleAmount').value=person.due.toFixed(2);$('settleAmount').max=person.due;
+ $('settleDate').value=today();$('settleNote').value='';
+ $('settleSubmit').textContent=isRec?'Save received payment':'Save payment';
+ fillSelect('settleAccount');
+ $('settleModal').hidden=false;
+}
+$('closeSettle').addEventListener('click',()=>{$('settleModal').hidden=true;activeSettlementId=null;});
+$('settleModal').addEventListener('click',e=>{if(e.target===$('settleModal')){$('settleModal').hidden=true;activeSettlementId=null;}});
+$('settleForm').addEventListener('submit',e=>{
+ e.preventDefault();
+ let person=data.people.find(p=>p.id===activeSettlementId);if(!person)return;
+ let amount=Number($('settleAmount').value);
+ if(!(amount>0)||amount>person.due){alert('Enter an amount greater than 0 and not more than the outstanding balance.');return;}
+ const isRec=person.kind==='Receivable',accountId=$('settleAccount').value,date=$('settleDate').value,note=$('settleNote').value.trim();
+ person.due=Math.max(0,Math.round((person.due-amount)*100)/100);
+ data.transactions.push({id:crypto.randomUUID(),type:isRec?'Income':'Expense',amount,account:accountId,category:isRec?'Receivable collection':'Payable settlement',date,party:person.name,personId:person.id,linkRole:'settlement',note:note||(isRec?'Received from ':'Paid to ')+person.name,created:Date.now()});
+ $('settleModal').hidden=true;activeSettlementId=null;persist();
+});
+document.querySelector('.app').addEventListener('click',e=>{
+ let settle=e.target.closest('[data-settle]');
+ if(settle){let p=data.people.find(x=>x.id===settle.dataset.settle);if(p)openSettlement(p);return;}
+ let del=e.target.closest('[data-person-delete]');
+ if(del&&confirm('Delete this person and ALL transactions linked to this receivable/payable record? This will reverse their effect on account balances.')){const id=del.dataset.personDelete;data.people=data.people.filter(p=>p.id!==id);data.transactions=data.transactions.filter(t=>t.personId!==id);persist();}
+});
+function printCurrent(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('printing'));$(id).classList.add('printing');window.print();setTimeout(()=>$(id).classList.remove('printing'),500);}
+window.addEventListener('afterprint',()=>document.querySelectorAll('.page').forEach(p=>p.classList.remove('printing')));
+$('txDate').value=$('transferDate').value=$('recDate').value=$('payDate').value=today();setTxKind('Expense');renderAll();
+</script></body></html>
